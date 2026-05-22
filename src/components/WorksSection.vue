@@ -8,9 +8,9 @@ function FormAtList(items?: WorksProps['works']) {
       <div class="space-y-2" key={index}>
         <div class="flex items-start justify-between">
           <div class="text-left">
-            <span class="text-sm text-tTitle font-bold mr-2"> {item.company}</span>
+            <span class="text-sm text-tTitle font-bold mr-2">{item.company}</span>
             <span class="text-xs">{item.depart}</span>
-            <span>_</span>
+            <span class="mx-1 text-xs text-tTitle">|</span>
             <span class="text-xs">{item.role}</span>
           </div>
           <div class="shrink-0 text-right text-xs">
@@ -28,7 +28,6 @@ function FormAtList(items?: WorksProps['works']) {
 }
 
 const props = defineProps<WorksProps>()
-
 const SectionNode = () => FormAtList(props.works)
 </script>
 

@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {},
     colors: {
-      tBlue: 'rgb(22,119,255)',
-      tTitle: 'rgb(64,64,65)',
-      tRed: 'rgb(239 68 68)',
+      tBlue: '#1e3a8a',
+      tTitle: '#111827',
+      tRed: '#111827',
       bgGray: 'rgb(243 244 246)'
     }
   },

@@ -7,11 +7,7 @@ function FormAtList(items?: string[], liClass = 'tracking-wide mx-0.5 ml-1.5 mb-
   return items.map((item, index) => {
     const parts = item.split(/(<[^>]+>)/).map((part, i) => {
       if (part.startsWith('<') && part.endsWith('>')) {
-        return (
-          <span key={i} class="text-tRed">
-            {part.slice(1, -1)}
-          </span>
-        )
+        return <strong key={i}>{part.slice(1, -1)}</strong>
       }
       return part
     })
@@ -81,8 +77,8 @@ function FormatText(input?: string) {
 
 const RoleNode = () => FormAtList(props.role)
 const BgNode = () => FormAtList(props.bg)
-const ActionsNode = () => FormAtList(props.actions, 'tracking-wide mx-0.5 ml-1.5 mb-1 leading-5')
-const ResultNode = () => FormAtList(props.result, 'tracking-wide mx-0.5 ml-1.5 mb-1 leading-5')
+const ActionsNode = () => FormAtList(props.actions, 'tracking-wide pl-1 mb-1.5 leading-5')
+const ResultNode = () => FormAtList(props.result, 'tracking-wide pl-1 mb-1.5 leading-5')
 const SkillNode = () => FormAtList(props.skills)
 
 const TitleNode = FormatText(props.title)
@@ -133,7 +129,7 @@ const TitleNode = FormatText(props.title)
         <div class="text-left" v-if="actions">
           <div class="text-xs font-bold text-tTitle mb-1">行动</div>
           <!-- slot位置 -->
-          <ol class="list-decimal col-span-5 ml-5 text-xs">
+          <ol class="list-decimal list-outside col-span-5 pl-5 text-xs">
             <ActionsNode />
           </ol>
         </div>
@@ -144,7 +140,7 @@ const TitleNode = FormatText(props.title)
             结果
           </div>
           <!-- slot位置 -->
-          <ol class="list-decimal col-span-5 ml-5 text-xs">
+          <ol class="list-decimal list-outside col-span-5 pl-5 text-xs">
             <ResultNode />
           </ol>
         </div>

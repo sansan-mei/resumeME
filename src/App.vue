@@ -1,7 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { computed, ref } from 'vue'
 import Content from '../content'
 import EducationSection from './components/EducationSection.vue'
+import CoreHighlightsSection from './components/CoreHighlightsSection.vue'
 import HeaderSection from './components/HeaderSection.vue'
 import LeftContentSection from './components/LeftContentSection.vue'
 import LinkSection from './components/LinkSection.vue'
@@ -37,21 +38,18 @@ const educationRef = ref<EducationProps[]>(Content.educations)
 const socials = ref(Content.socials)
 
 const mySkills = ref(Content.mySkills)
-
-const acknowledgement = computed(() => {
-  if (Content.acknowledgments || Content.acknowledgments === undefined) {
-    return true
-  } else {
-    return false
-  }
-})
+const coreHighlights = ref(
+  Array.isArray(Content.coreHighlights)
+    ? Content.coreHighlights.join(' ')
+    : Content.coreHighlights || '',
+)
 
 const headerFlex = computed(() => Content.headerFlex)
 </script>
 
 <template>
   <PageSection>
-    <section :class="[headerFlex && 'flex mb-3']">
+    <section :class="['mb-3', headerFlex && 'flex']">
       <HeaderSection
         v-bind="{
           ...header,
@@ -68,6 +66,10 @@ const headerFlex = computed(() => Content.headerFlex)
         :class="[headerFlex && 'w-[58%]']"
       />
     </section>
+
+    <LeftContentSection title="" :direction="direction" v-if="coreHighlights">
+      <CoreHighlightsSection :content="coreHighlights" />
+    </LeftContentSection>
 
     <LeftContentSection title="社交信息" :direction="direction" v-if="socials">
       <SocialSection :socials="socials" />
@@ -91,10 +93,6 @@ const headerFlex = computed(() => Content.headerFlex)
 
     <LeftContentSection v-if="educationRef.length" title="教育经历" :direction="direction">
       <EducationSection v-for="(edu, index) of educationRef" v-bind="edu" :key="index" />
-    </LeftContentSection>
-
-    <LeftContentSection v-if="acknowledgement" title="致谢" :direction="direction">
-      <span class="text-xs">感谢您的耐心阅读！期待与您一起共事~~</span>
     </LeftContentSection>
   </PageSection>
 </template>

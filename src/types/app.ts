@@ -65,6 +65,7 @@ export type MySkillsProps = {
 export type AppState = {
   works: WorksProps['works']
   link: LinkProps
+  coreHighlights?: string | string[]
   skills: string[]
   products: ProductProps[]
   educations: EducationProps[]

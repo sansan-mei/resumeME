@@ -14,7 +14,7 @@ function FormAtList(items?: string[]) {
       return part
     })
     return (
-      <li key={index} class="tracking-wide mx-0.5 ml-1.5 mb-1 leading-5">
+      <li key={index} class="tracking-wide pl-1 mb-1.5 leading-5">
         {parts}
       </li>
     )
@@ -25,7 +25,7 @@ const LiNode = () => FormAtList(props.content)
 </script>
 
 <template>
-  <ol class="list-decimal col-span-5 ml-5 text-xs">
+  <ol class="list-decimal list-outside col-span-5 pl-5 text-xs">
     <LiNode />
   </ol>
 </template>

@@ -33,7 +33,7 @@ const parentClass = computed(() => [
         :href="`tel:${phone}`"
         target="_blank"
         rel="noreferrer"
-        class="inline-block decoration-solid underline hover:text-tRed"
+        class="inline-block decoration-solid underline hover:text-tBlue"
         >{{ phone }}</a
       >
     </div>
@@ -43,19 +43,19 @@ const parentClass = computed(() => [
       <a
         :href="`mailto:${email}`"
         rel="noreferrer"
-        class="inline-block decoration-solid underline hover:text-tRed"
+        class="inline-block decoration-solid underline hover:text-tBlue"
         >{{ email }}
       </a>
     </div>
     <div :class="parentClass" v-if="experience">
       <PhCactus color="blue" v-if="showIcon" />
       <span v-else>工作经验：</span>
-      <span class="hover:text-tRed">{{ experience }}</span>
+      <span class="hover:text-tBlue">{{ experience }}</span>
     </div>
     <div :class="parentClass" v-if="age">
       <PhCirclesThree color="blue" v-if="showIcon" />
       <span v-else>年龄：</span>
-      <span class="hover:text-tRed">{{ age }}岁 </span>
+      <span class="hover:text-tBlue">{{ age }}岁 </span>
     </div>
     <div :class="parentClass" v-if="socialAddress">
       <PhAddressBook color="blue" v-if="showIcon" />
@@ -64,7 +64,7 @@ const parentClass = computed(() => [
         :href="`${socialAddress}`"
         target="_blank"
         rel="noreferrer"
-        class="inline-block decoration-solid underline hover:text-tRed"
+        class="inline-block decoration-solid underline hover:text-tBlue"
         >{{ socialAddress }}</a
       >
     </div>
