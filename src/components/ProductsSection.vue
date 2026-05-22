@@ -2,7 +2,7 @@
 import type { ProductProps } from '@/types/app'
 const props = defineProps<ProductProps>()
 
-function FormAtList(items?: string[]) {
+function FormAtList(items?: string[], liClass = 'tracking-wide mx-0.5 ml-1.5 mb-1') {
   if (!items) return
   return items.map((item, index) => {
     const parts = item.split(/(<[^>]+>)/).map((part, i) => {
@@ -16,7 +16,7 @@ function FormAtList(items?: string[]) {
       return part
     })
     return (
-      <li key={index} class="tracking-wide mx-0.5 ml-1.5 mb-1">
+      <li key={index} class={liClass}>
         {parts}
       </li>
     )
@@ -81,8 +81,8 @@ function FormatText(input?: string) {
 
 const RoleNode = () => FormAtList(props.role)
 const BgNode = () => FormAtList(props.bg)
-const ActionsNode = () => FormAtList(props.actions)
-const ResultNode = () => FormAtList(props.result)
+const ActionsNode = () => FormAtList(props.actions, 'tracking-wide mx-0.5 ml-1.5 mb-1 leading-5')
+const ResultNode = () => FormAtList(props.result, 'tracking-wide mx-0.5 ml-1.5 mb-1 leading-5')
 const SkillNode = () => FormAtList(props.skills)
 
 const TitleNode = FormatText(props.title)
@@ -108,7 +108,7 @@ const TitleNode = FormatText(props.title)
         <div class="text-left" v-if="bg">
           <div class="text-xs font-bold text-tTitle mb-1">背景</div>
           <!-- slot位置 -->
-          <ul class="list-disc col-span-5 ml-2 text-xs">
+          <ul class="list-none col-span-5 ml-2 text-xs">
             <BgNode />
           </ul>
         </div>
@@ -116,7 +116,7 @@ const TitleNode = FormatText(props.title)
         <div class="text-left" v-if="skills">
           <div class="text-xs font-bold text-tTitle mb-1">技术栈</div>
           <!-- slot位置 -->
-          <ul class="list-disc col-span-5 ml-2 text-xs">
+          <ul class="list-none col-span-5 ml-2 text-xs">
             <SkillNode />
           </ul>
         </div>
@@ -125,7 +125,7 @@ const TitleNode = FormatText(props.title)
           <div class="text-xs font-bold text-tTitle mb-1">角色</div>
           <!-- slot位置 -->
 
-          <ul class="list-disc col-span-5 ml-2 text-xs">
+          <ul class="list-none col-span-5 ml-2 text-xs">
             <RoleNode />
           </ul>
         </div>
@@ -133,9 +133,9 @@ const TitleNode = FormatText(props.title)
         <div class="text-left" v-if="actions">
           <div class="text-xs font-bold text-tTitle mb-1">行动</div>
           <!-- slot位置 -->
-          <ul class="list-disc col-span-5 ml-2 text-xs">
+          <ol class="list-decimal col-span-5 ml-5 text-xs">
             <ActionsNode />
-          </ul>
+          </ol>
         </div>
 
         <div class="text-left mb-2.5" v-if="result">
@@ -144,9 +144,9 @@ const TitleNode = FormatText(props.title)
             结果
           </div>
           <!-- slot位置 -->
-          <ul class="list-disc col-span-5 ml-2 text-xs">
+          <ol class="list-decimal col-span-5 ml-5 text-xs">
             <ResultNode />
-          </ul>
+          </ol>
         </div>
       </div>
     </div>
