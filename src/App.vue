@@ -55,7 +55,7 @@ const headerFlex = computed(() => Content.headerFlex)
           ...header,
           headerFlex,
         }"
-        :class="[headerFlex && 'w-[42%]']"
+        :class="[headerFlex && 'w-[28%]']"
       />
 
       <LinkSection
@@ -63,7 +63,7 @@ const headerFlex = computed(() => Content.headerFlex)
           ...linkInfo,
           headerFlex,
         }"
-        :class="[headerFlex && 'w-[58%]']"
+        :class="[headerFlex && 'w-[72%]']"
       />
     </section>
 

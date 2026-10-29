@@ -21,8 +21,8 @@ const parentClass = computed(() => [
       'flex-wrap',
       'items-center',
       'gap-y-0.5',
-      'text-sm',
-      !headerFlex && 'justify-center gap-x-2',
+      headerFlex ? 'text-sm' : 'text-xs',
+      !headerFlex && 'justify-between gap-x-2',
       'mt-2',
     ]"
   >

@@ -17,7 +17,7 @@ defineProps<MySkillsProps>()
         width="18"
         height="18"
         :alt="s.title"
-        :src="`https://cdn.simpleicons.org/${s.icon}`"
+        :src="s.src || `https://cdn.simpleicons.org/${s.icon}`"
       />
       <div class="font-medium mr-1 ml-1 hover:scale-110 transition">{{ s.title }}</div>
     </div>

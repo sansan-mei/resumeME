@@ -59,6 +59,7 @@ export type MySkillsProps = {
   content: {
     icon: string
     title: string
+    src?: string
   }[]
 }
 
