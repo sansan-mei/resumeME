@@ -5,6 +5,7 @@ export type ProductProps = {
   skills?: string[]
   bg?: string[]
   role?: string[]
+  actionsTitle?: string
   actions?: string[]
   result?: string[]
 }

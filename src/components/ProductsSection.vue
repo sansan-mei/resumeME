@@ -2,12 +2,16 @@
 import type { ProductProps } from '@/types/app'
 const props = defineProps<ProductProps>()
 
-function FormAtList(items?: string[], liClass = 'tracking-wide mx-0.5 ml-1.5 mb-1') {
+function FormAtList(items?: string[], liClass = 'leading-5') {
   if (!items) return
   return items.map((item, index) => {
     const parts = item.split(/(<[^>]+>)/).map((part, i) => {
       if (part.startsWith('<') && part.endsWith('>')) {
-        return <strong key={i}>{part.slice(1, -1)}</strong>
+        return (
+          <strong key={i} class="resume-emphasis">
+            {part.slice(1, -1)}
+          </strong>
+        )
       }
       return part
     })
@@ -19,134 +23,112 @@ function FormAtList(items?: string[], liClass = 'tracking-wide mx-0.5 ml-1.5 mb-
   })
 }
 
+// PDF 投递使用纯文本标题；兼容旧内容中的 Markdown 链接标签。
 function FormatText(input?: string) {
-  if (!input) return null
-
-  const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g // 匹配 Markdown 链接
-  const independentTextRegex = /(?<!\])\s*[（(]([^（）()]+)[）)]/g
-
-  const parts = []
-  let currentIndex = 0
-  let match
-
-  // 解析 Markdown 链接
-  while ((match = markdownLinkRegex.exec(input)) !== null) {
-    const [fullMatch, text, url] = match
-    const matchIndex = match.index
-
-    if (currentIndex < matchIndex) {
-      parts.push(input.substring(currentIndex, matchIndex))
-    }
-
-    parts.push(
-      <a key={matchIndex} href={url} class="text-tBlue" target="_blank">
-        <u class="underline">{text}</u>
-      </a>,
-    )
-
-    currentIndex = matchIndex + fullMatch.length
-  }
-
-  let independentMatch
-
-  // 解析（独立开发）等格式
-  while ((independentMatch = independentTextRegex.exec(input)) !== null) {
-    const [fullIndependentMatch, independentText] = independentMatch
-    const independentMatchIndex = independentMatch.index
-
-    if (currentIndex < independentMatchIndex) {
-      parts.push(input.substring(currentIndex, independentMatchIndex))
-    }
-
-    parts.push(
-      <span key={independentMatchIndex} class="text-tBlue ml-1">
-        ({independentText})
-      </span>,
-    )
-
-    currentIndex = independentMatchIndex + fullIndependentMatch.length
-  }
-
-  // 添加最后的普通文本
-  if (currentIndex < input.length) {
-    parts.push(input.substring(currentIndex))
-  }
-
-  return <span>{parts}</span>
+  return <span>{input?.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')}</span>
 }
 
 const RoleNode = () => FormAtList(props.role)
 const BgNode = () => FormAtList(props.bg)
-const ActionsNode = () => FormAtList(props.actions, 'tracking-wide pl-1 mb-1.5 leading-5')
-const ResultNode = () => FormAtList(props.result, 'tracking-wide pl-1 mb-1.5 leading-5')
+const ActionsNode = () => FormAtList(props.actions, 'pl-0.5 leading-5')
+const ResultNode = () => FormAtList(props.result, 'pl-0.5 leading-5')
 const SkillNode = () => FormAtList(props.skills)
 
-const TitleNode = FormatText(props.title)
+const TitleNode = () => FormatText(props.title)
 </script>
 
 <template>
-  <div class="space-y-2">
-    <div class="flex flex-col items-start">
-      <div class="flex justify-between w-full mb-1">
-        <div class="text-left">
-          <div class="text-tTitle font-bold mr-2 mb-1 text-base">
-            <!-- slot位置 -->
-            <TitleNode />
-          </div>
-        </div>
-        <div class="shrink-0 text-right text-xs">
-          <!-- slot位置 -->
-          {{ time }}
-        </div>
-      </div>
+  <article class="project-entry text-xs leading-5">
+    <header class="project-header">
+      <h3 class="project-title text-tTitle font-bold text-base"><TitleNode /></h3>
+      <span class="project-meta">{{ time }}</span>
+    </header>
 
-      <div class="text-left ml-1.5">
-        <div class="text-left" v-if="bg">
-          <div class="text-xs font-bold text-tTitle mb-1">背景</div>
-          <!-- slot位置 -->
-          <ul class="list-none col-span-5 ml-2 text-xs">
-            <BgNode />
-          </ul>
-        </div>
-
-        <div class="text-left" v-if="skills">
-          <div class="text-xs font-bold text-tTitle mb-1">技术栈</div>
-          <!-- slot位置 -->
-          <ul class="list-none col-span-5 ml-2 text-xs">
-            <SkillNode />
-          </ul>
-        </div>
-
-        <div class="text-left" v-if="role">
-          <div class="text-xs font-bold text-tTitle mb-1">角色</div>
-          <!-- slot位置 -->
-
-          <ul class="list-none col-span-5 ml-2 text-xs">
-            <RoleNode />
-          </ul>
-        </div>
-
-        <div class="text-left" v-if="actions">
-          <div class="text-xs font-bold text-tTitle mb-1">行动</div>
-          <!-- slot位置 -->
-          <ol class="list-decimal list-outside col-span-5 pl-5 text-xs">
-            <ActionsNode />
-          </ol>
-        </div>
-
-        <div class="text-left mb-2.5" v-if="result">
-          <div class="text-xs font-bold text-tTitle mb-1">
-            行动 <span class="align-text-bottom">|</span>
-            结果
-          </div>
-          <!-- slot位置 -->
-          <ol class="list-decimal list-outside col-span-5 pl-5 text-xs">
-            <ResultNode />
-          </ol>
-        </div>
-      </div>
+    <div v-if="bg?.length" class="project-summary">
+      <span class="project-label text-tTitle">项目背景</span>
+      <ul class="list-none">
+        <BgNode />
+      </ul>
     </div>
-  </div>
+    <div v-if="skills?.length" class="project-summary project-tech">
+      <span class="project-label">技术栈</span>
+      <ul class="list-none">
+        <SkillNode />
+      </ul>
+    </div>
+    <div v-if="role?.length" class="project-summary">
+      <span class="project-label text-tTitle">承担职责</span>
+      <ul class="list-none">
+        <RoleNode />
+      </ul>
+    </div>
+    <div v-if="actions?.length" class="project-details">
+      <h4 class="project-label text-tTitle">{{ actionsTitle || '主要行动' }}</h4>
+      <ol class="project-list list-decimal list-outside pl-5">
+        <ActionsNode />
+      </ol>
+    </div>
+    <div v-if="result?.length" class="project-details">
+      <h4 class="project-label text-tTitle">主要贡献与成果</h4>
+      <ol class="project-list list-decimal list-outside pl-5">
+        <ResultNode />
+      </ol>
+    </div>
+  </article>
 </template>
 
-<style></style>
+<style scoped>
+.project-entry + .project-entry {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e0d9;
+}
+.project-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 16px;
+  margin-bottom: 6px;
+}
+.project-title {
+  flex: 1 1 26rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+.project-meta {
+  margin-left: auto;
+  color: #625c55;
+}
+.project-summary {
+  display: grid;
+  grid-template-columns: 4em minmax(0, 1fr);
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.project-label {
+  font-weight: 600;
+}
+.project-tech {
+  color: #625c55;
+}
+.project-details {
+  margin-top: 6px;
+}
+.project-list {
+  margin-top: 4px;
+}
+.project-list :deep(li + li) {
+  margin-top: 4px;
+}
+@media print {
+  .project-header,
+  .project-summary,
+  .project-details > h4 {
+    break-after: avoid;
+  }
+  .project-entry :deep(li) {
+    break-inside: avoid;
+  }
+}
+</style>

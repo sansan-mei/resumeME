@@ -11,8 +11,8 @@ const { direction = 'left' } = defineProps<Props>()
 </script>
 
 <template>
-  <div v-if="direction == 'top'">
-    <h4 class="text-base text-tTitle font-bold">
+  <div v-if="direction == 'top' && title">
+    <h4 class="section-heading text-base text-tTitle font-bold">
       {{ title }}
     </h4>
   </div>
@@ -21,7 +21,7 @@ const { direction = 'left' } = defineProps<Props>()
     :class="[direction === 'left' ? 'grid-cols-6' : 'grid-cols-5']"
   >
     <div v-if="direction == 'left'">
-      <h4 class="text-base text-tTitle font-bold">
+      <h4 class="section-heading text-base text-tTitle font-bold">
         {{ title }}
       </h4>
     </div>
@@ -31,4 +31,10 @@ const { direction = 'left' } = defineProps<Props>()
   </section>
 </template>
 
-<style></style>
+<style scoped>
+@media print {
+  .section-heading {
+    break-after: avoid;
+  }
+}
+</style>

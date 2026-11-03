@@ -1,40 +1,30 @@
-<script lang="tsx" setup>
+<script lang="ts" setup>
 import type { WorksProps } from '@/types/app'
 
-function FormAtList(items?: WorksProps['works']) {
-  if (!items) return
-  return items.map((item, index) => {
-    return (
-      <div class="space-y-2" key={index}>
-        <div class="flex items-start justify-between">
-          <div class="text-left">
-            <span class="text-sm text-tTitle font-bold mr-2">{item.company}</span>
-            <span class="text-xs">{item.depart}</span>
-            <span class="mx-1 text-xs text-tTitle">|</span>
-            <span class="text-xs">{item.role}</span>
-          </div>
-          <div class="shrink-0 text-right text-xs">
-            <div>{item.time}</div>
-          </div>
-        </div>
-        {item.bg && (
-          <ul class="ml-4 list-none">
-            <li class="list-none text-xs leading-5">{item.bg}</li>
-          </ul>
-        )}
-      </div>
-    )
-  })
-}
-
-const props = defineProps<WorksProps>()
-const SectionNode = () => FormAtList(props.works)
+defineProps<WorksProps>()
 </script>
 
 <template>
-  <div class="col-span-5 grid gap-x-6 gap-y-2" style="grid-template-columns: repeat(1, 1fr)">
-    <SectionNode />
+  <div class="col-span-5 grid gap-3">
+    <article v-for="(item, index) in works" :key="index" class="work-entry">
+      <header class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <div class="min-w-0">
+          <span class="text-sm text-tTitle font-bold mr-2">{{ item.company }}</span>
+          <span class="text-xs">{{ item.depart }}</span>
+          <span class="mx-1 text-xs text-tTitle">|</span>
+          <span class="text-xs">{{ item.role }}</span>
+        </div>
+        <span class="shrink-0 text-right text-xs text-slate-600">{{ item.time }}</span>
+      </header>
+      <p v-if="item.bg" class="mt-1 text-xs leading-5">{{ item.bg }}</p>
+    </article>
   </div>
 </template>
 
-<style></style>
+<style scoped>
+@media print {
+  .work-entry {
+    break-inside: avoid;
+  }
+}
+</style>

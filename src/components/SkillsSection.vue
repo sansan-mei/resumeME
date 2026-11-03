@@ -9,7 +9,11 @@ function FormAtList(items?: string[]) {
   return items.map((item, index) => {
     const parts = item.split(/(<[^>]+>)/).map((part, i) => {
       if (part.startsWith('<') && part.endsWith('>')) {
-        return <b key={i}>{part.slice(1, -1)}</b>
+        return (
+          <b key={i} class="resume-emphasis">
+            {part.slice(1, -1)}
+          </b>
+        )
       }
       return part
     })

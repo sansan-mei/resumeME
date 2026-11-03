@@ -26,47 +26,30 @@ const parentClass = computed(() => [
       'mt-2',
     ]"
   >
-    <div :class="parentClass" v-if="phone">
-      <PhPhone color="blue" v-if="showIcon" />
-      <span v-else>联系电话：</span>
-      <a
-        :href="`tel:${phone}`"
-        target="_blank"
-        rel="noreferrer"
-        class="inline-block decoration-solid underline hover:text-tBlue"
-        >{{ phone }}</a
-      >
-    </div>
-    <div :class="parentClass" v-if="email">
-      <PhAt color="blue" v-if="showIcon" />
-      <span v-else>联系邮箱：</span>
-      <a
-        :href="`mailto:${email}`"
-        rel="noreferrer"
-        class="inline-block decoration-solid underline hover:text-tBlue"
-        >{{ email }}
-      </a>
-    </div>
     <div :class="parentClass" v-if="experience">
-      <PhCactus color="blue" v-if="showIcon" />
+      <PhCactus color="var(--resume-accent)" v-if="showIcon" />
       <span v-else>工作经验：</span>
-      <span class="hover:text-tBlue">{{ experience }}</span>
+      <span class="resume-contact">{{ experience }}</span>
     </div>
     <div :class="parentClass" v-if="age">
-      <PhCirclesThree color="blue" v-if="showIcon" />
+      <PhCirclesThree color="var(--resume-accent)" v-if="showIcon" />
       <span v-else>年龄：</span>
-      <span class="hover:text-tBlue">{{ age }}岁 </span>
+      <span class="resume-contact">{{ age }}岁 </span>
+    </div>
+    <div :class="parentClass" v-if="phone">
+      <PhPhone color="var(--resume-accent)" v-if="showIcon" />
+      <span v-else>联系电话：</span>
+      <span class="resume-contact">{{ phone }}</span>
+    </div>
+    <div :class="parentClass" v-if="email">
+      <PhAt color="var(--resume-accent)" v-if="showIcon" />
+      <span v-else>联系邮箱：</span>
+      <span class="resume-contact">{{ email }}</span>
     </div>
     <div :class="parentClass" v-if="socialAddress">
-      <PhAddressBook color="blue" v-if="showIcon" />
+      <PhAddressBook color="var(--resume-accent)" v-if="showIcon" />
       <span v-else>个人站点：</span>
-      <a
-        :href="`${socialAddress}`"
-        target="_blank"
-        rel="noreferrer"
-        class="inline-block decoration-solid underline hover:text-tBlue"
-        >{{ socialAddress }}</a
-      >
+      <span class="resume-contact">{{ socialAddress }}</span>
     </div>
   </div>
 </template>
