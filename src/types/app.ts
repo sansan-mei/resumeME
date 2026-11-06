@@ -26,6 +26,7 @@ export type LinkProps = {
   experience?: string
   age?: string
   socialAddress?: string
+  github?: string
   showIcon?: boolean
   headerFlex?: boolean
 }
@@ -56,6 +57,16 @@ export type SocialProps = {
 
 export type Direction = 'left' | 'top'
 
+/** 页面板块标识，用于 AppState.sectionOrder 自定义板块顺序 */
+export type SectionKey =
+  | 'highlights'
+  | 'socials'
+  | 'mySkills'
+  | 'works'
+  | 'skills'
+  | 'products'
+  | 'educations'
+
 export type MySkillsProps = {
   content: {
     icon: string
@@ -77,4 +88,6 @@ export type AppState = {
   mySkills?: MySkillsProps['content']
   acknowledgments?: boolean
   headerFlex?: boolean
+  /** 板块顺序；未列出的板块不显示，不填时使用默认顺序 */
+  sectionOrder?: SectionKey[]
 }

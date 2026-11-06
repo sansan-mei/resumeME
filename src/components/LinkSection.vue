@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { LinkProps } from '@/types/app'
-import { PhAddressBook, PhAt, PhCactus, PhCirclesThree, PhPhone } from '@phosphor-icons/vue'
+import { PhAddressBook, PhAt, PhCactus, PhCirclesThree, PhGithubLogo, PhPhone } from '@phosphor-icons/vue'
 import { computed } from 'vue'
 
 const props = defineProps<LinkProps>()
@@ -45,6 +45,11 @@ const parentClass = computed(() => [
       <PhAt color="var(--resume-accent)" v-if="showIcon" />
       <span v-else>联系邮箱：</span>
       <span class="resume-contact">{{ email }}</span>
+    </div>
+    <div :class="parentClass" v-if="github">
+      <PhGithubLogo color="var(--resume-accent)" v-if="showIcon" />
+      <span v-else>GitHub：</span>
+      <span class="resume-contact">{{ github }}</span>
     </div>
     <div :class="parentClass" v-if="socialAddress">
       <PhAddressBook color="var(--resume-accent)" v-if="showIcon" />

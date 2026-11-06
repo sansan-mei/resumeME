@@ -11,7 +11,7 @@ const { direction = 'left' } = defineProps<Props>()
 </script>
 
 <template>
-  <div v-if="direction == 'top' && title">
+  <div v-if="direction == 'top' && title" class="section-heading-wrap">
     <h4 class="section-heading text-base text-tTitle font-bold">
       {{ title }}
     </h4>
@@ -35,6 +35,18 @@ const { direction = 'left' } = defineProps<Props>()
 @media print {
   .section-heading {
     break-after: avoid;
+  }
+
+  /* Chromium 打印常忽略 break-after，用占位高度让标题与正文首段同页 */
+  .section-heading-wrap {
+    break-inside: avoid;
+  }
+
+  .section-heading-wrap::after {
+    content: '';
+    display: block;
+    height: 6rem;
+    margin-bottom: -6rem;
   }
 }
 </style>

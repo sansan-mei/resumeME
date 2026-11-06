@@ -18,6 +18,7 @@ import {
   type HeaderProps,
   type LinkProps,
   type ProductProps,
+  type SectionKey,
   type WorksProps,
 } from './types/app'
 
@@ -45,6 +46,21 @@ const coreHighlights = ref(
 )
 
 const headerFlex = computed(() => Content.headerFlex)
+
+const DEFAULT_SECTION_ORDER: SectionKey[] = [
+  'highlights',
+  'socials',
+  'mySkills',
+  'works',
+  'skills',
+  'products',
+  'educations',
+]
+
+// 去重，避免同一板块被配置两次时重复渲染
+const sectionOrder = computed<SectionKey[]>(() => [
+  ...new Set(Content.sectionOrder?.length ? Content.sectionOrder : DEFAULT_SECTION_ORDER),
+])
 </script>
 
 <template>
@@ -67,33 +83,55 @@ const headerFlex = computed(() => Content.headerFlex)
       />
     </section>
 
-    <LeftContentSection title="" :direction="direction" v-if="coreHighlights">
-      <CoreHighlightsSection :content="coreHighlights" />
-    </LeftContentSection>
+    <template v-for="key of sectionOrder" :key="key">
+      <LeftContentSection
+        v-if="key === 'highlights' && coreHighlights"
+        title=""
+        :direction="direction"
+      >
+        <CoreHighlightsSection :content="coreHighlights" />
+      </LeftContentSection>
 
-    <LeftContentSection title="社交信息" :direction="direction" v-if="socials">
-      <SocialSection :socials="socials" />
-    </LeftContentSection>
+      <LeftContentSection
+        v-else-if="key === 'socials' && socials"
+        title="社交信息"
+        :direction="direction"
+      >
+        <SocialSection :socials="socials" />
+      </LeftContentSection>
 
-    <LeftContentSection title="技术栈" :direction="direction" v-if="mySkills">
-      <MySkillsSection :content="mySkills" />
-    </LeftContentSection>
+      <LeftContentSection
+        v-else-if="key === 'mySkills' && mySkills"
+        title="技术栈"
+        :direction="direction"
+      >
+        <MySkillsSection :content="mySkills" />
+      </LeftContentSection>
 
-    <LeftContentSection title="工作经历" :direction="direction">
-      <WorksSection :works="works" />
-    </LeftContentSection>
+      <LeftContentSection v-else-if="key === 'works'" title="工作经历" :direction="direction">
+        <WorksSection :works="works" />
+      </LeftContentSection>
 
-    <LeftContentSection title="专业技能" :direction="direction">
-      <SkillsSection :content="professionSkills" />
-    </LeftContentSection>
+      <LeftContentSection v-else-if="key === 'skills'" title="专业技能" :direction="direction">
+        <SkillsSection :content="professionSkills" />
+      </LeftContentSection>
 
-    <LeftContentSection v-if="productRef.length" title="项目经历" :direction="direction">
-      <ProductsSection v-for="(product, index) of productRef" v-bind="product" :key="index" />
-    </LeftContentSection>
+      <LeftContentSection
+        v-else-if="key === 'products' && productRef.length"
+        title="项目经历"
+        :direction="direction"
+      >
+        <ProductsSection v-for="(product, index) of productRef" v-bind="product" :key="index" />
+      </LeftContentSection>
 
-    <LeftContentSection v-if="educationRef.length" title="教育经历" :direction="direction">
-      <EducationSection v-for="(edu, index) of educationRef" v-bind="edu" :key="index" />
-    </LeftContentSection>
+      <LeftContentSection
+        v-else-if="key === 'educations' && educationRef.length"
+        title="教育经历"
+        :direction="direction"
+      >
+        <EducationSection v-for="(edu, index) of educationRef" v-bind="edu" :key="index" />
+      </LeftContentSection>
+    </template>
   </PageSection>
 </template>
 
