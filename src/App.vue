@@ -10,6 +10,7 @@ import MySkillsSection from './components/MySkillsSection.vue'
 import PageSection from './components/PageSection.vue'
 import ProductsSection from './components/ProductsSection.vue'
 import SkillsSection from './components/SkillsSection.vue'
+import SectionOrderPanel from './components/SectionOrderPanel.vue'
 import SocialSection from './components/SocialSection.vue'
 import WorksSection from './components/WorksSection.vue'
 import {
@@ -57,10 +58,52 @@ const DEFAULT_SECTION_ORDER: SectionKey[] = [
   'educations',
 ]
 
+const configuredOrder: SectionKey[] = Content.sectionOrder?.length
+  ? Content.sectionOrder
+  : DEFAULT_SECTION_ORDER
+
+// 拖拽面板只在开发模式出现，调整结果存在浏览器本地；构建产物始终以 content.ts 为准
+const isDev = import.meta.env.DEV
+const STORAGE_KEY = 'resume:sectionOrder'
+
+function loadStoredOrder(): SectionKey[] | null {
+  if (!isDev) return null
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null')
+    if (
+      Array.isArray(value) &&
+      value.every((key) => DEFAULT_SECTION_ORDER.includes(key as SectionKey))
+    ) {
+      return value as SectionKey[]
+    }
+  } catch {
+    // 本地存储不可用或内容损坏时退回 content.ts 配置
+  }
+  return null
+}
+
+const orderRef = ref<SectionKey[]>(loadStoredOrder() ?? [...configuredOrder])
+
 // 去重，避免同一板块被配置两次时重复渲染
-const sectionOrder = computed<SectionKey[]>(() => [
-  ...new Set(Content.sectionOrder?.length ? Content.sectionOrder : DEFAULT_SECTION_ORDER),
-])
+const sectionOrder = computed<SectionKey[]>(() => [...new Set(orderRef.value)])
+
+function changeOrder(order: SectionKey[]) {
+  orderRef.value = order
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(order))
+  } catch {
+    // 忽略存储失败，本次会话内的调整仍然生效
+  }
+}
+
+function resetOrder() {
+  orderRef.value = [...configuredOrder]
+  try {
+    localStorage.removeItem(STORAGE_KEY)
+  } catch {
+    // 同上
+  }
+}
 </script>
 
 <template>
@@ -132,6 +175,14 @@ const sectionOrder = computed<SectionKey[]>(() => [
         <EducationSection v-for="(edu, index) of educationRef" v-bind="edu" :key="index" />
       </LeftContentSection>
     </template>
+
+    <SectionOrderPanel
+      v-if="isDev"
+      :order="sectionOrder"
+      :all="DEFAULT_SECTION_ORDER"
+      @change="changeOrder"
+      @reset="resetOrder"
+    />
   </PageSection>
 </template>
 
