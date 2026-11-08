@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import Content from '../content'
 import EducationSection from './components/EducationSection.vue'
+import ExportImageButton from './components/ExportImageButton.vue'
 import CoreHighlightsSection from './components/CoreHighlightsSection.vue'
 import HeaderSection from './components/HeaderSection.vue'
 import LeftContentSection from './components/LeftContentSection.vue'
@@ -107,7 +108,7 @@ function resetOrder() {
 </script>
 
 <template>
-  <PageSection>
+  <PageSection id="resume-page">
     <section :class="['mb-3', headerFlex && 'flex']">
       <HeaderSection
         v-bind="{
@@ -175,15 +176,16 @@ function resetOrder() {
         <EducationSection v-for="(edu, index) of educationRef" v-bind="edu" :key="index" />
       </LeftContentSection>
     </template>
-
-    <SectionOrderPanel
-      v-if="isDev"
-      :order="sectionOrder"
-      :all="DEFAULT_SECTION_ORDER"
-      @change="changeOrder"
-      @reset="resetOrder"
-    />
   </PageSection>
+
+  <SectionOrderPanel
+    v-if="isDev"
+    :order="sectionOrder"
+    :all="DEFAULT_SECTION_ORDER"
+    @change="changeOrder"
+    @reset="resetOrder"
+  />
+  <ExportImageButton target-id="resume-page" />
 </template>
 
 <style scoped>
