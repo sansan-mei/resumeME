@@ -18,6 +18,11 @@
   margin-bottom: 5px;
   margin-top: 5px;
 }
+/* 固定 A4 无边距，浏览器默认打印设置下也保持三页 */
+@page {
+  size: A4;
+  margin: 0;
+}
 @media print {
   .A4 {
     width: 100%;
