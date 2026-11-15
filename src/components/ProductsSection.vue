@@ -127,6 +127,11 @@ const TitleNode = () => FormatText(props.title)
   .project-details > h4 {
     break-after: avoid;
   }
+  /* 标题行跨页会被 Chromium 拆开并与下一项重叠，整块保持在同一页 */
+  .project-header,
+  .project-summary {
+    break-inside: avoid;
+  }
   .project-entry :deep(li) {
     break-inside: avoid;
   }

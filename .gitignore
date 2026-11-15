@@ -31,3 +31,9 @@ coverage
 
 !content.template.ts
 content*.ts
+# 私人资料与备份，不进公开仓库
+content.ts.bak*
+/docs/
+/output/
+/tmp/
+*.pdf
